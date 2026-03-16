@@ -1,7 +1,26 @@
+<h1 align="center">🤖 SENNA BOT</h1>
 
-# <h3 align="center">🤖TELEGRAM SENNA-BOT</h3>
+<p align="center">
+Bot de Telegram multifuncional.
+</p>
+
+<p align="center">
+<img src="https://img.shields.io/badge/Telegram-Bot-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white">
+</p>
+
 ---
 
+## 📱 Probar el Bot
+
+Si tienes dudas antes de instalar **SENNA-BOT**, puedes probar el bot directamente en Telegram.
+
+<p align="center">
+
+[![Telegram](https://img.shields.io/badge/Probar%20Bot%20en%20Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/fg_userss)
+
+</p>
+
+---
 # 📌 Características
 
 - 🧩 Sistema de **plugins dinámico**
@@ -15,7 +34,7 @@
 ---
 
 # ⚙️ Instalación
- 
+
 ## 1️⃣ Clonar el repositorio
 
 ```bash
