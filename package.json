@@ -9,6 +9,7 @@
  "dependencies": {
   "cfonts": "^3.3.1",
   "chalk": "^5.6.2",
+  "dotenv": "^17.3.1",
   "fg-senna": "^0.0.3",
   "fs-extra": "^11.2.0",
   "telegraf": "^4.16.3",

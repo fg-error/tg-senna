@@ -1,3 +1,7 @@
+import dns from "dns"
+
+dns.setDefaultResultOrder("ipv4first")
+
 import "./config.js"
 import "./lib/database.js"
 import { loadUser, loadGroup } from "./lib/loadDatabase.js"
