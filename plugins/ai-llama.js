@@ -29,7 +29,7 @@ export default {
 
       const prompt = `${ROLE}\n${history}\nUsuario (${pushName}): ${text}\nAsistente:`;
 
-      const url = `${api}/ai/mistral?text=${encodeURIComponent(prompt)}&apikey=${apikey}`;
+      const url = `${api}/ai/gemini?text=${encodeURIComponent(prompt)}&apikey=${apikey}`;
       const res = await fetch(url);
 
       if (!res.ok) throw new Error(`Estado de respuesta: ${res.status}`);
