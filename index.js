@@ -48,18 +48,7 @@ let messageColor = isCommand
 ? chalk.green.bold(text)
 : chalk.white(text)
 
-console.log(`
-${chalk.hex('#FE0041').bold('╭━━━〔 MESSAGE LOG 〕━━━⬣')}
-🤖 ${chalk.cyan(me)}
-⏰ ${chalk.black(chalk.bgGreen(
-new Date().toLocaleTimeString('es-ES',{timeZone:'America/Argentina/Buenos_Aires'})
-))}
-📦 ${chalk.black(chalk.bgYellow(niceType))}
-👤 ${chalk.redBright(sender)}
-📍 ${contextIcon} ${chalk.green(contextLabel)}${chatName ? ' ~ ' + chalk.cyan(chatName) : ''}
-💬 ${messageColor}
-${chalk.hex('#FE0041').bold('╰━━━━━━━━━━━━━━━━━━━━⬣')}
-`.trim())
+console.log(`${chalk.hex('#FE0041').bold('╭━━━〔 MESSAGE LOG 〕━━━⬣')}   🤖 ${chalk.cyan(me)}   ⏰ ${chalk.black(chalk.bgGreen(new Date().toLocaleTimeString('es-ES',{timeZone:'America/Argentina/Buenos_Aires'})))}   📦 ${chalk.black(chalk.bgYellow(niceType))}   👤 ${chalk.redBright(sender)}   📍 ${contextIcon} ${chalk.green(contextLabel)}${chatName ? ' ~ ' + chalk.cyan(chatName) : ''}   💬 ${messageColor}   ${chalk.hex('#FE0041').bold('╰━━━━━━━━━━━━━━━━━━━━⬣')}`.trim())
 
 }
 
@@ -193,6 +182,17 @@ ctx.reply("❌ Error ejecutando comando")
 /* ========= MESSAGE EVENT ========= */
 bot.on(["message","channel_post"], async (ctx) => {
 
+for (let name in global.plugins) {
+let plugin = global.plugins[name]
+if (plugin && typeof plugin.event === "function") {
+try {
+await plugin.event(ctx)
+} catch (e) {
+console.log(chalk.red("❌ Error en evento de plugin:"), name, e)
+}
+}
+}
+
 let text =
 ctx.message?.text ||
 ctx.channelPost?.text
@@ -202,6 +202,7 @@ if (!text) return
 runPlugins(ctx, text)
 
 })
+
 /* ========= BUTTON EVENT ========= */
 
 bot.on("callback_query", async (ctx) => {
@@ -230,13 +231,13 @@ bot.launch()
 const { say } = cfonts
 
 say('Senna FG', {
-  font: 'pallet',
-  align: 'center',
-  gradient: ['red', 'magenta']
+font: 'pallet',
+align: 'center',
+gradient: ['red', 'magenta']
 })
 
 say('senna-bot By FG Ig: @fg.error', {
-  font: 'console',
-  align: 'center',
-  gradient: ['cyan', 'magenta']
+font: 'console',
+align: 'center',
+gradient: ['cyan', 'magenta']
 })
