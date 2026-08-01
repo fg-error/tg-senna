@@ -4,21 +4,22 @@ tags: ["economy"],
 command: ["register", "reg"],
 
 run: async (ctx, { args }) => {
+const messageId = ctx.message?.message_id
 const user = global.db.users[ctx.from.id]
 if (user) {
-await ctx.reply("✅ Ya estás registrado!")
+await ctx.reply("✅ Ya estás registrado!", { reply_to_message_id: messageId })
 return
 }
 
 const input = args.join(" ")
 if (!input) {
-await ctx.reply("❌ Usa: /register <nombre>.<edad>\nEjemplo: /register Juan.25")
+await ctx.reply("❌ Usa: /register <nombre>.<edad>\nEjemplo: /register Juan.25", { reply_to_message_id: messageId })
 return
 }
 
 const parts = input.split(".")
 if (parts.length !== 2) {
-await ctx.reply("❌ Formato incorrecto\nUsa: /register <nombre>.<edad>\nEjemplo: /register Juan.25")
+await ctx.reply("❌ Formato incorrecto\nUsa: /register <nombre>.<edad>\nEjemplo: /register Juan.25", { reply_to_message_id: messageId })
 return
 }
 
@@ -26,7 +27,7 @@ const name = parts[0].trim()
 const age = parseInt(parts[1].trim())
 
 if (!name || !age || isNaN(age) || age < 1 || age > 120) {
-await ctx.reply("❌ Datos inválidos\nNombre: texto\nEdad: número entre 1-120")
+await ctx.reply("❌ Datos inválidos\nNombre: texto\nEdad: número entre 1-120", { reply_to_message_id: messageId })
 return
 }
 
@@ -46,7 +47,7 @@ lastRob: 0,
 age: age
 }
 
-await ctx.reply(`✅ *Registro completado!*
+await ctx.reply(`✅ **Registro completado!**
 
 🎉 Bienvenido ${name}
 
@@ -55,6 +56,6 @@ await ctx.reply(`✅ *Registro completado!*
 🪙 Recibiste 100 monedas
 💰 Balance: 100 🪙
 🏦 Banco: 0 🪙
-`)
+`, { reply_to_message_id: messageId })
 }
 }
