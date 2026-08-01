@@ -4,6 +4,7 @@ tags: ["economy"],
 command: ["unregister", "unreg"],
 
 run: async (ctx) => {
+try {
 const messageId = ctx.message?.message_id
 const user = global.db.users[ctx.from.id]
 if (!user) {
@@ -27,9 +28,14 @@ reply_to_message_id: messageId,
 [Markup.button.callback("❌ Cancelar", "unreg_cancel")]
 ])
 })
+} catch (error) {
+console.error("Error en unregister:", error)
+await ctx.reply("❌ Error ejecutando comando")
+}
 },
 
 callback: async (ctx) => {
+try {
 const data = ctx.callbackQuery?.data
 
 if (data === "unreg_confirm") {
@@ -40,7 +46,7 @@ return
 }
 
 delete global.db.users[ctx.from.id]
-await ctx.reply("✅ *Cuenta eliminada correctamente*\n\n🔹 Tus datos han sido borrados\n🔹 Puedes volver a registrarte con /reg\n\n¡Gracias por usar la bot!")
+await ctx.reply("✅ *Cuenta eliminada correctamente*\n\n🔹 Tus datos han sido borrados\n🔹 Puedes volver a registrarte con /register\n\n¡Gracias por usar el bot!")
 await ctx.deleteMessage()
 return
 }
@@ -49,6 +55,10 @@ if (data === "unreg_cancel") {
 await ctx.reply("❌ Eliminación cancelada")
 await ctx.deleteMessage()
 return
+}
+} catch (error) {
+console.error("Error:", error)
+await ctx.reply("❌ Error ejecutando comando")
 }
 }
 }
