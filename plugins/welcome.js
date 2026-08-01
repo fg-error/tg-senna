@@ -19,10 +19,10 @@ export default {
         const username = member.username ? `@${member.username}` : name
 
         const caption =
-          `✨ **¡BIENVENIDO/A AL GRUPO!** ✨\n\n` +
-          `👤 **Usuario:** ${name} (${username})\n` +
-          `🏰 **Grupo:** ${groupName}\n\n` +
-          `🎈 Disfruta tu estadía y respeta a los demás miembros.`
+  `🎉 *¡Hey, ${name}!* Bienvenido/a a *${groupName}*.\n\n` +
+  `👤 ${username}\n\n` +
+  `Esperamos que hayas venido con ganas de pasarla bien... y no de romper las reglas. 😜\n\n` +
+  `💬 Preséntate, participa y disfruta del grupo. ¡Que la pases genial! ✨`
 
         await sendUserMedia(ctx, member.id, caption)
       }
@@ -38,10 +38,10 @@ export default {
       const username = member.username ? `@${member.username}` : name
 
       const caption =
-        `👋 **¡HASTA LUEGO!**\n\n` +
-        `👤 **Usuario:** ${name} (${username})\n` +
-        `🏰 **Grupo:** ${groupName}\n\n` +
-        `🥀 Un miembro ha abandonado la comunidad.`
+  `👋 *${name}* ha salido de *${groupName}*.\n\n` +
+  `👤 ${username}\n\n` +
+  `Esperamos que no haya sido por nuestras bromas... 😅\n\n` +
+  `🍀 ¡Mucha suerte y aquí tendrás las puertas abiertas si algún día decides volver!`
 
       await sendUserMedia(ctx, member.id, caption)
     }
