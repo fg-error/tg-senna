@@ -24,7 +24,7 @@ export default {
           `🏰 **Grupo:** ${groupName}\n\n` +
           `🎈 Disfruta tu estadía y respeta a los demás miembros.`
 
-        await sendUserMedia(ctx, member.id, caption, "tada")
+        await sendUserMedia(ctx, member.id, caption)
       }
     }
 
@@ -43,7 +43,7 @@ export default {
         `🏰 **Grupo:** ${groupName}\n\n` +
         `🥀 Un miembro ha abandonado la comunidad.`
 
-      await sendUserMedia(ctx, member.id, caption, "balloon")
+      await sendUserMedia(ctx, member.id, caption)
     }
   },
 
@@ -59,7 +59,7 @@ export default {
 
     if (["on", "1", "act"].includes(action)) {
       group.welcome = true
-      return ctx.reply("✅ **Módulo de Bienvenida y Despedida:** Activado", {
+      return ctx.reply("✅ **Estado:** Activado", {
         parse_mode: "Markdown",
         reply_to_message_id: ctx.message?.message_id
       })
@@ -67,7 +67,7 @@ export default {
 
     if (["off", "0", "desact"].includes(action)) {
       group.welcome = false
-      return ctx.reply("❌ **Estado:** Desactivado", {
+      return ctx.reply("❌ **Módulo de Bienvenida y Despedida:** Desactivado", {
         parse_mode: "Markdown",
         reply_to_message_id: ctx.message?.message_id
       })
@@ -75,7 +75,7 @@ export default {
 
     const status = group.welcome ? "🟢 Activado" : "🔴 Desactivado"
     return ctx.reply(
-      `⚙️ **Estado:** ${status}\n\n` +
+      `⚙️ **ESTADO:** ${status}\n\n` +
       `Uso del comando:\n` +
       `• \`${usedPrefix}${command} on\` → Activar\n` +
       `• \`${usedPrefix}${command} off\` → Desactivar`,
@@ -87,13 +87,7 @@ export default {
   }
 }
 
-async function sendUserMedia(ctx, userId, caption, effectId) {
-  const effectMap = {
-    tada: "5046589136895476101",
-    balloon: "5046509860389126442"
-  }
-
-  const messageEffectId = effectMap[effectId]
+async function sendUserMedia(ctx, userId, caption) {
   const replyTo = ctx.message?.message_id
 
   try {
@@ -104,20 +98,17 @@ async function sendUserMedia(ctx, userId, caption, effectId) {
       await ctx.replyWithPhoto(fileId, {
         caption,
         parse_mode: "Markdown",
-        message_effect_id: messageEffectId,
         reply_to_message_id: replyTo
       })
     } else {
       await ctx.reply(caption, {
         parse_mode: "Markdown",
-        message_effect_id: messageEffectId,
         reply_to_message_id: replyTo
       })
     }
   } catch (e) {
     await ctx.reply(caption, {
       parse_mode: "Markdown",
-      message_effect_id: messageEffectId,
       reply_to_message_id: replyTo
     })
   }
