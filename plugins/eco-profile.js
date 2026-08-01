@@ -11,7 +11,7 @@ await ctx.reply("❌ No estás registrado\nUsa /reg <nombre>.<edad> para registr
 return
 }
 
-await ctx.reply(`👤 *Perfil de ${user.name}*
+await ctx.reply(`👤 Perfil de ${user.name}
 
 📝 Nombre: ${user.name}
 🎂 Edad: ${user.age || "No especificada"} años
@@ -19,7 +19,7 @@ await ctx.reply(`👤 *Perfil de ${user.name}*
 📅 Registrado: ${new Date(user.registered).toLocaleDateString()}
 ⭐ Premium: ${user.premium ? "✅ Sí" : "❌ No"}
 
-💰 **Economía**
+💰 Economía
 🪙 Monedas: ${user.coins || 0}
 🏦 Banco: ${user.bank || 0}
 💎 Total: ${(user.coins || 0) + (user.bank || 0)}`, { reply_to_message_id: messageId })
