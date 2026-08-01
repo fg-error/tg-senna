@@ -19,7 +19,7 @@ if (!input) {
 await ctx.replyWithHTML(`❌ <b>Formato incorrecto</b>
 
 Usa: <code>/register nombre.edad</code>
-Ejemplo: <code>/register Juan.25</code>`, { reply_to_message_id: messageId })
+Ejemplo: <code>/reg Juan.25</code>`, { reply_to_message_id: messageId })
 return
 }
 
