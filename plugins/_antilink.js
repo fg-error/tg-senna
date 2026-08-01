@@ -1,5 +1,13 @@
 import { loadGroup } from "../lib/loadDatabase.js"
 
+function escapeHtml(text) {
+  if (!text) return ""
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+}
+
 export default {
   command: ["antilink", "antilinks"],
 
@@ -28,15 +36,15 @@ export default {
       try {
         await ctx.deleteMessage(ctx.message.message_id)
 
-        const name = sender.first_name || "Usuario"
-        const username = sender.username ? `@${sender.username}` : name
+        const name = escapeHtml(sender.first_name || "Usuario")
+        const username = sender.username ? `@${escapeHtml(sender.username)}` : name
 
         const warningMsg =
-          `⚠️ *¡ENLACE NO PERMITIDO!*\n\n` +
-          `👤 *${name}* (${username}), no se permiten enlaces en este grupo.\n\n` +
-          `🗑️ *Tu mensaje ha sido eliminado.*`
+          `⚠️ <b>¡ENLACE NO PERMITIDO!</b>\n\n` +
+          `👤 <b>${name}</b> (${username}), no se permiten enlaces en este grupo.\n\n` +
+          `🗑️ <b>Tu mensaje ha sido eliminado.</b>`
 
-        await ctx.reply(warningMsg, { parse_mode: "Markdown" })
+        await ctx.reply(warningMsg, { parse_mode: "HTML" })
       } catch (e) {
         console.log("❌ Error en antilink:", e)
       }
@@ -66,28 +74,28 @@ export default {
 
     if (["on", "1", "act"].includes(action)) {
       group.antilink = true
-      return ctx.reply("✅ **AntiLink:** Activado", {
-        parse_mode: "Markdown",
+      return ctx.reply("✅ <b>AntiLink:</b> Activado", {
+        parse_mode: "HTML",
         reply_to_message_id: ctx.message?.message_id
       })
     }
 
     if (["off", "0", "desact"].includes(action)) {
       group.antilink = false
-      return ctx.reply("❌ **AntiLink:** Desactivado", {
-        parse_mode: "Markdown",
+      return ctx.reply("❌ <b>AntiLink:</b> Desactivado", {
+        parse_mode: "HTML",
         reply_to_message_id: ctx.message?.message_id
       })
     }
 
     const status = group.antilink ? "🟢 Activado" : "🔴 Desactivado"
     return ctx.reply(
-      `⚙️ **ESTADO DEL ANTILINK:** ${status}\n\n` +
+      `⚙️ <b>ESTADO DEL ANTILINK:</b> ${status}\n\n` +
       `Uso del comando:\n` +
-      `• \`${usedPrefix}${command} on\` → Activar\n` +
-      `• \`${usedPrefix}${command} off\` → Desactivar`,
+      `• <code>${usedPrefix}${command} on</code> → Activar\n` +
+      `• <code>${usedPrefix}${command} off</code> → Desactivar`,
       {
-        parse_mode: "Markdown",
+        parse_mode: "HTML",
         reply_to_message_id: ctx.message?.message_id
       }
     )
