@@ -18,7 +18,7 @@ if (now - lastDaily < cooldown) {
 const remaining = cooldown - (now - lastDaily)
 const hours = Math.floor(remaining / 3600000)
 const minutes = Math.floor((remaining % 3600000) / 60000)
-await ctx.reply(`⏳ Espera ${hours}horas ${minutes}minutos para tu daily`)
+await ctx.reply(`⏳ Espera ${hours}h ${minutes}m para tu daily`)
 return
 }
 
