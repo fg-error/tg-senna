@@ -12,14 +12,14 @@ await ctx.reply("❌ No estás registrado\nUsa /reg <nombre>.<edad> para registr
 return
 }
 
-await ctx.reply(`⚠️ *¿Estás seguro de eliminar tu cuenta?*
+await ctx.replyWithHTML(`⚠️ <b>¿Estás seguro de eliminar tu cuenta?</b>
 
-📝 Nombre: ${user.name}
-🎂 Edad: ${user.age || "No especificada"} años
-🪙 Monedas: ${user.coins || 0}
-🏦 Banco: ${user.bank || 0}
+📝 <b>Nombre:</b> ${user.name}
+🎂 <b>Edad:</b> ${user.age || "No especificada"} años
+🪙 <b>Monedas:</b> ${user.coins || 0}
+🏦 <b>Banco:</b> ${user.bank || 0}
 
-❌ *Esta acción no se puede deshacer*`, {
+❌ <i>Esta acción no se puede deshacer</i>`, {
 reply_to_message_id: messageId,
 reply_markup: {
 inline_keyboard: [
@@ -38,6 +38,7 @@ await ctx.reply("❌ Error ejecutando comando")
 
 callback: async (ctx) => {
 try {
+await ctx.answerCbQuery()
 const data = ctx.callbackQuery?.data
 
 if (data === "unreg_confirm") {
@@ -48,13 +49,20 @@ return
 }
 
 delete global.db.users[ctx.from.id]
-await ctx.reply("✅ *Cuenta eliminada correctamente*\n\n🔹 Tus datos han sido borrados\n🔹 Puedes volver a registrarte con /register\n\n¡Gracias por usar el bot!")
+await ctx.replyWithHTML(`✅ <b>Cuenta eliminada correctamente</b>
+
+🔹 Tus datos han sido borrados
+🔹 Puedes volver a registrarte con /register
+
+<i>¡Gracias por usar el bot!</i>`)
 await ctx.deleteMessage()
 return
 }
 
 if (data === "unreg_cancel") {
-await ctx.reply("❌ Eliminación cancelada")
+await ctx.replyWithHTML(`❌ <b>Eliminación cancelada</b>
+
+<i>Tu cuenta está a salvo</i>`)
 await ctx.deleteMessage()
 return
 }
