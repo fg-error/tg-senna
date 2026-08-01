@@ -18,8 +18,6 @@ global.commandCount = 0
 
 const pluginFolder = "./plugins"
 
-/* ========= MESSAGE LOG ========= */
-
 function printMessageLog(ctx, text) {
 
 let sender = ctx.from?.username || ctx.from?.first_name || "Unknown"
@@ -51,8 +49,6 @@ let messageColor = isCommand
 console.log(`${chalk.hex('#FE0041').bold('╭━━━〔 MESSAGE LOG 〕━━━⬣')}   🤖 ${chalk.cyan(me)}   ⏰ ${chalk.black(chalk.bgGreen(new Date().toLocaleTimeString('es-ES',{timeZone:'America/Argentina/Buenos_Aires'})))}   📦 ${chalk.black(chalk.bgYellow(niceType))}   👤 ${chalk.redBright(sender)}   📍 ${contextIcon} ${chalk.green(contextLabel)}${chatName ? ' ~ ' + chalk.cyan(chatName) : ''}   💬 ${messageColor}   ${chalk.hex('#FE0041').bold('╰━━━━━━━━━━━━━━━━━━━━⬣')}`.trim())
 
 }
-
-/* ========= PLUGIN LOADER ========= */
 
 async function loadPlugin(file) {
 
@@ -101,8 +97,6 @@ loadPlugin(file)
 
 loadPlugins()
 
-/* ========= HOT RELOAD ========= */
-
 fs.watch(pluginFolder, (event, file) => {
 
 if (!file || !file.endsWith(".js")) return
@@ -115,8 +109,6 @@ chalk.yellow(file)
 loadPlugin(file)
 
 })
-
-/* ========= MAIN HANDLER ========= */
 
 async function runPlugins(ctx, text) {
 
@@ -179,7 +171,6 @@ ctx.reply("❌ Error ejecutando comando")
 
 }
 
-/* ========= MESSAGE EVENT ========= */
 bot.on(["message","channel_post"], async (ctx) => {
 
 for (let name in global.plugins) {
@@ -203,8 +194,6 @@ runPlugins(ctx, text)
 
 })
 
-/* ========= BUTTON EVENT ========= */
-
 bot.on("callback_query", async (ctx) => {
 
 let data = ctx.callbackQuery?.data
@@ -217,17 +206,13 @@ runPlugins(ctx, data)
 
 })
 
-/* ========= ERROR ========= */
-
 bot.catch(err => {
 console.log(chalk.red("❌ Error Telegram:"), err)
 })
 
-/* ========= START ========= */
-
 bot.launch()
 
-//--
+
 const { say } = cfonts
 
 say('Senna FG', {
