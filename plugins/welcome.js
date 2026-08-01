@@ -41,7 +41,7 @@ export default {
         `👋 **¡HASTA LUEGO!**\n\n` +
         `👤 **Usuario:** ${name} (${username})\n` +
         `🏰 **Grupo:** ${groupName}\n\n` +
-        `🥀 Un miembro nos ha abandonado.`
+        `🥀 Un miembro ha abandonado la comunidad.`
 
       await sendUserMedia(ctx, member.id, caption, "balloon")
     }
@@ -49,7 +49,9 @@ export default {
 
   run: async (ctx, { args, usedPrefix, command }) => {
     if (ctx.chat?.type !== "group" && ctx.chat?.type !== "supergroup") {
-      return ctx.reply("❌ Este comando solo se puede usar en grupos.")
+      return ctx.reply("❌ Este comando solo se puede usar en grupos.", {
+        reply_to_message_id: ctx.message?.message_id
+      })
     }
 
     const group = loadGroup(ctx)
@@ -57,21 +59,30 @@ export default {
 
     if (["on", "1", "act"].includes(action)) {
       group.welcome = true
-      return ctx.reply("✅ **Módulo de Bienvenida y Despedida:** Activado", { parse_mode: "Markdown" })
+      return ctx.reply("✅ **Módulo de Bienvenida y Despedida:** Activado", {
+        parse_mode: "Markdown",
+        reply_to_message_id: ctx.message?.message_id
+      })
     }
 
     if (["off", "0", "desact"].includes(action)) {
       group.welcome = false
-      return ctx.reply("❌ **Módulo de Bienvenida y Despedida:** Desactivado", { parse_mode: "Markdown" })
+      return ctx.reply("❌ **Estado:** Desactivado", {
+        parse_mode: "Markdown",
+        reply_to_message_id: ctx.message?.message_id
+      })
     }
 
     const status = group.welcome ? "🟢 Activado" : "🔴 Desactivado"
     return ctx.reply(
-      `⚙️ **ESTADO DEL MÓDULO:** ${status}\n\n` +
+      `⚙️ **Estado:** ${status}\n\n` +
       `Uso del comando:\n` +
       `• \`${usedPrefix}${command} on\` → Activar\n` +
       `• \`${usedPrefix}${command} off\` → Desactivar`,
-      { parse_mode: "Markdown" }
+      {
+        parse_mode: "Markdown",
+        reply_to_message_id: ctx.message?.message_id
+      }
     )
   }
 }
@@ -83,6 +94,7 @@ async function sendUserMedia(ctx, userId, caption, effectId) {
   }
 
   const messageEffectId = effectMap[effectId]
+  const replyTo = ctx.message?.message_id
 
   try {
     const photos = await ctx.telegram.getUserProfilePhotos(userId, 0, 1)
@@ -92,18 +104,21 @@ async function sendUserMedia(ctx, userId, caption, effectId) {
       await ctx.replyWithPhoto(fileId, {
         caption,
         parse_mode: "Markdown",
-        message_effect_id: messageEffectId
+        message_effect_id: messageEffectId,
+        reply_to_message_id: replyTo
       })
     } else {
       await ctx.reply(caption, {
         parse_mode: "Markdown",
-        message_effect_id: messageEffectId
+        message_effect_id: messageEffectId,
+        reply_to_message_id: replyTo
       })
     }
   } catch (e) {
     await ctx.reply(caption, {
       parse_mode: "Markdown",
-      message_effect_id: messageEffectId
+      message_effect_id: messageEffectId,
+      reply_to_message_id: replyTo
     })
   }
 }
