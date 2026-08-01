@@ -7,7 +7,7 @@ run: async (ctx) => {
 const messageId = ctx.message?.message_id
 const user = global.db.users[ctx.from.id]
 if (!user) {
-await ctx.reply("❌ No estás registrado\nUsa /register <nombre>.<edad> para registrarte", { reply_to_message_id: messageId })
+await ctx.reply("❌ No estás registrado\nUsa /reg <nombre>.<edad> para registrarte", { reply_to_message_id: messageId })
 return
 }
 
