@@ -1,7 +1,7 @@
 export default {
-help: ["unreg"],
+help: ["unregister", "unreg"],
 tags: ["economy"],
-command: ["unreg"],
+command: ["unregister", "unreg"],
 
 run: async (ctx) => {
 const messageId = ctx.message?.message_id
@@ -27,5 +27,28 @@ reply_to_message_id: messageId,
 [Markup.button.callback("❌ Cancelar", "unreg_cancel")]
 ])
 })
+},
+
+callback: async (ctx) => {
+const data = ctx.callbackQuery?.data
+
+if (data === "unreg_confirm") {
+const user = global.db.users[ctx.from.id]
+if (!user) {
+await ctx.reply("❌ No estás registrado")
+return
+}
+
+delete global.db.users[ctx.from.id]
+await ctx.reply("✅ *Cuenta eliminada correctamente*\n\n🔹 Tus datos han sido borrados\n🔹 Puedes volver a registrarte con /reg\n\n¡Gracias por usar la bot!")
+await ctx.deleteMessage()
+return
+}
+
+if (data === "unreg_cancel") {
+await ctx.reply("❌ Eliminación cancelada")
+await ctx.deleteMessage()
+return
+}
 }
 }
