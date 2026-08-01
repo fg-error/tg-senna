@@ -1,7 +1,7 @@
 export default {
-help: ["unregister", "unreg"],
+help: ["unreg"],
 tags: ["economy"],
-command: ["unregister", "unreg"],
+command: ["unreg"],
 
 run: async (ctx) => {
 try {
@@ -12,8 +12,6 @@ await ctx.reply("❌ No estás registrado\nUsa /reg <nombre>.<edad> para registr
 return
 }
 
-const { Markup } = require("telegraf")
-
 await ctx.reply(`⚠️ *¿Estás seguro de eliminar tu cuenta?*
 
 📝 Nombre: ${user.name}
@@ -23,10 +21,14 @@ await ctx.reply(`⚠️ *¿Estás seguro de eliminar tu cuenta?*
 
 ❌ *Esta acción no se puede deshacer*`, {
 reply_to_message_id: messageId,
-...Markup.inlineKeyboard([
-[Markup.button.callback("✅ Sí, eliminar", "unreg_confirm")],
-[Markup.button.callback("❌ Cancelar", "unreg_cancel")]
-])
+reply_markup: {
+inline_keyboard: [
+[
+{ text: "✅ Sí, eliminar", callback_data: "unreg_confirm" },
+{ text: "❌ Cancelar", callback_data: "unreg_cancel" }
+]
+]
+}
 })
 } catch (error) {
 console.error("Error en unregister:", error)
@@ -57,7 +59,7 @@ await ctx.deleteMessage()
 return
 }
 } catch (error) {
-console.error("Error:", error)
+console.error("Error en callback unregister:", error)
 await ctx.reply("❌ Error ejecutando comando")
 }
 }
