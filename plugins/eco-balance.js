@@ -11,10 +11,9 @@ await ctx.reply("❌ No estás registrado\nUsa /reg <nombre>.<edad> para registr
 return
 }
 
-await ctx.reply(`💰 *Balance de ${user.name}*
-
+await ctx.reply(`
 🪙 Monedas: ${user.coins || 0}
 🏦 Banco: ${user.bank || 0}
-💎 Total: ${(user.coins || 0) + (user.bank || 0)}`, { reply_to_message_id: messageId })
+💰 Total: ${(user.coins || 0) + (user.bank || 0)}`, { reply_to_message_id: messageId })
 }
 }
