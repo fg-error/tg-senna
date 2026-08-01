@@ -1,4 +1,13 @@
+
 import { loadGroup } from "../lib/loadDatabase.js"
+
+function escapeHtml(text) {
+  if (!text) return ""
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+}
 
 export default {
   command: ["welcome", "bienvenida", "bye", "despedida"],
@@ -8,7 +17,7 @@ export default {
     if (!ctx.chat || (ctx.chat.type !== "group" && ctx.chat.type !== "supergroup") || !msg) return
 
     const group = loadGroup(ctx)
-    const groupName = ctx.chat.title || "el grupo"
+    const groupName = escapeHtml(ctx.chat.title || "el grupo")
 
     if (msg.new_chat_members) {
       if (!group.welcome) return
@@ -16,11 +25,11 @@ export default {
       for (const member of msg.new_chat_members) {
         if (member.id === ctx.botInfo.id) continue
 
-        const name = member.first_name || "Usuario"
-        const username = member.username ? `@${member.username}` : name
+        const name = escapeHtml(member.first_name || "Usuario")
+        const username = member.username ? `@${escapeHtml(member.username)}` : name
 
         const caption =
-          `🎉 *¡Hey, ${name}!* Bienvenido/a a *${groupName}*.\n\n` +
+          `🎉 <b>¡Hey, ${name}!</b> Bienvenido/a a <b>${groupName}</b>.\n\n` +
           `👤 ${username}\n\n` +
           `Esperamos que hayas venido con ganas de pasarla bien... y no de romper las reglas. 😜\n\n` +
           `💬 Preséntate, participa y disfruta del grupo. ¡Que la pases genial! ✨`
@@ -35,11 +44,11 @@ export default {
       const member = msg.left_chat_member
       if (member.id === ctx.botInfo.id) return
 
-      const name = member.first_name || "Usuario"
-      const username = member.username ? `@${member.username}` : name
+      const name = escapeHtml(member.first_name || "Usuario")
+      const username = member.username ? `@${escapeHtml(member.username)}` : name
 
       const caption =
-        `👋 *${name}* ha salido de *${groupName}*.\n\n` +
+        `👋 <b>${name}</b> ha salido de <b>${groupName}</b>.\n\n` +
         `👤 ${username}\n\n` +
         `Esperamos que no haya sido por nuestras bromas... 😅\n\n` +
         `🍀 ¡Mucha suerte y aquí tendrás las puertas abiertas si algún día decides volver!`
@@ -60,28 +69,28 @@ export default {
 
     if (["on", "1", "act"].includes(action)) {
       group.welcome = true
-      return ctx.reply("✅ **Bienvenida y Despedida:** Activado", {
-        parse_mode: "Markdown",
+      return ctx.reply("✅ <b>Bienvenida y Despedida:</b> Activado", {
+        parse_mode: "HTML",
         reply_to_message_id: ctx.message?.message_id
       })
     }
 
     if (["off", "0", "desact"].includes(action)) {
       group.welcome = false
-      return ctx.reply("❌ **Bienvenida y Despedida:** Desactivado", {
-        parse_mode: "Markdown",
+      return ctx.reply("❌ <b>Bienvenida y Despedida:</b> Desactivado", {
+        parse_mode: "HTML",
         reply_to_message_id: ctx.message?.message_id
       })
     }
 
     const status = group.welcome ? "🟢 Activado" : "🔴 Desactivado"
     return ctx.reply(
-      `⚙️ **ESTADO:** ${status}\n\n` +
+      `⚙️ <b>ESTADO:</b> ${status}\n\n` +
       `Uso del comando:\n` +
-      `• \`${usedPrefix}${command} on\` → Activar\n` +
-      `• \`${usedPrefix}${command} off\` → Desactivar`,
+      `• <code>${usedPrefix}${command} on</code> → Activar\n` +
+      `• <code>${usedPrefix}${command} off</code> → Desactivar`,
       {
-        parse_mode: "Markdown",
+        parse_mode: "HTML",
         reply_to_message_id: ctx.message?.message_id
       }
     )
@@ -96,16 +105,16 @@ async function sendUserMedia(ctx, userId, caption) {
       const fileId = photos.photos[0][0].file_id
       await ctx.replyWithPhoto(fileId, {
         caption,
-        parse_mode: "Markdown"
+        parse_mode: "HTML"
       })
     } else {
       await ctx.reply(caption, {
-        parse_mode: "Markdown"
+        parse_mode: "HTML"
       })
     }
   } catch (e) {
     await ctx.reply(caption, {
-      parse_mode: "Markdown"
+      parse_mode: "HTML"
     })
   }
 }
