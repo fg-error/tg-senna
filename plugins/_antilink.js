@@ -36,13 +36,24 @@ export default {
       try {
         await ctx.deleteMessage(ctx.message.message_id)
 
+        const untilDate = Math.floor(Date.now() / 1000) + 3600
+        await ctx.restrictChatMember(sender.id, {
+          permissions: {
+            can_send_messages: false,
+            can_send_media_messages: false,
+            can_send_other_messages: false,
+            can_add_web_page_previews: false
+          },
+          until_date: untilDate
+        })
+
         const name = escapeHtml(sender.first_name || "Usuario")
         const username = sender.username ? `@${escapeHtml(sender.username)}` : name
 
         const warningMsg =
           `⚠️ <b>¡ENLACE NO PERMITIDO!</b>\n\n` +
           `👤 <b>${name}</b> (${username}), no se permiten enlaces en este grupo.\n\n` +
-          `🗑️ <b>Tu mensaje ha sido eliminado.</b>`
+          `🔇 <b>Has sido silenciado por 1 hora.</b>`
 
         await ctx.reply(warningMsg, { parse_mode: "HTML" })
       } catch (e) {
