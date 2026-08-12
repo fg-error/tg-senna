@@ -1,43 +1,34 @@
 export default {
+  help: ["help"],
+  tags: ["main"], 
+  command: ["menu","help","menú"],
 
-help: ["help"],
-tags: ["main"], 
-command: ["menu","help","menú"],
+  run: async (ctx, { conn, usedPrefix }) => {
+    let tags = {
+      main: 'ACERCA DE',
+      ai: 'AI',
+      anime: 'ANIME',
+      search: 'BUSQUEDA',
+      dl: 'DESCARGAS',
+      group: 'GRUPO',
+      owner: 'OWNER',
+      tools: 'UTILIDADES'
+    }
 
-run: async (ctx, { conn, usedPrefix }) => {
+    let plugins = Object.values(global.plugins)
+    let categorias = {}
 
-let tags = {
-  main: 'ACERCA DE',
-  ai: 'AI',
-  anime: 'ANIME',
-  search: 'BUSQUEDA',
-  dl: 'DESCARGAS',
-  group: 'GRUPO',
-  owner: 'OWNER',
-  tools: 'UTILIDADES'
-}
+    for (let plugin of plugins) {
+      if (!plugin.help || !plugin.tags) continue
+      for (let tag of plugin.tags) {
+        if (!categorias[tag]) categorias[tag] = []
+        for (let help of plugin.help) {
+          categorias[tag].push(help)
+        }
+      }
+    }
 
-let plugins = Object.values(global.plugins)
-
-let categorias = {}
-
-for (let plugin of plugins) {
-
-if (!plugin.help || !plugin.tags) continue
-
-for (let tag of plugin.tags) {
-
-if (!categorias[tag]) categorias[tag] = []
-
-for (let help of plugin.help) {
-categorias[tag].push(help)
-}
-
-}
-
-}
-
-let text = `
+    let text = `
 ◈ ━━━━━ SENNA ━━━━━ ◈
 
 ⚙️ Plugins: ${plugins.length}
@@ -48,28 +39,22 @@ Canal: ${global.fg_canal}
 ≡ LISTA DE MENUS
 `
 
-for (let tag in tags) {
+    for (let tag in tags) {
+      if (!categorias[tag]) continue
+      text += `\n┌─⊷ ${tags[tag]} \n`
+      for (let cmd of categorias[tag]) {
+        text += `▢ ${usedPrefix}${cmd}\n`
+      }
+      text += `└───────────\n`
+    }
 
-if (!categorias[tag]) continue
-
-text += `\n┌─⊷ ${tags[tag]} \n`
-
-for (let cmd of categorias[tag]) {
-text += `▢ ${usedPrefix}${cmd}\n`
-}
-
-text += `└───────────\n`
-
-}
-
-//---
-let pp = './src/fg_logo.jpg'
-await conn.replyWithPhoto(
-{ source: pp },
-{ caption: text }
-)
-//conn.reply(text)
-
-}
-
+    let pp = './src/fg_logo.jpg'
+    await ctx.replyWithPhoto(
+      { source: pp },
+      {
+        caption: text,
+        reply_to_message_id: ctx.message.message_id
+      }
+    )
+  }
 }
