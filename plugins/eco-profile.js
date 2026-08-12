@@ -1,6 +1,6 @@
 export default {
 help: ["profile", "perfil"],
-tags: ["economy"],
+tags: ["profile"],
 command: ["profile", "perfil"],
 
 run: async (ctx) => {
