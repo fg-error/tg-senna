@@ -1,6 +1,6 @@
 export default {
 help: ["unreg"],
-tags: ["economy"],
+tags: ["profile"],
 command: ["unreg"],
 
 run: async (ctx) => {
