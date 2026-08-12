@@ -1,6 +1,6 @@
 export default {
 help: ["register", "reg"],
-tags: ["economy"],
+tags: ["profile"],
 command: ["register", "reg"],
 
 run: async (ctx, { args }) => {
