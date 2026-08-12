@@ -11,6 +11,7 @@ export default {
       search: 'BUSQUEDA',
       dl: 'DESCARGAS',
       group: 'GRUPO',
+      economy: 'ECONOMIA',
       owner: 'OWNER',
       tools: 'UTILIDADES'
     }
