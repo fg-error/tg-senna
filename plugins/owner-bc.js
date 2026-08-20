@@ -1,7 +1,8 @@
+
 export default {
   help: ["bc"],
   tags: ["owner"],
-  command: ["bc", "broadcast"],
+  command: ["bc"],
 
   run: async (ctx, { text }) => {
     const messageId = ctx.message?.message_id
@@ -28,9 +29,9 @@ export default {
       try {
         let name = global.db.users[id]?.name || id
         if (ctx.message?.reply_to_message) {
-          await ctx.copyMessage(id, ctx.chat.id, ctx.message.reply_to_message.message_id)
+          await ctx.telegram.copyMessage(id, ctx.chat.id, ctx.message.reply_to_message.message_id)
         }
-        await ctx.sendMessage(id, { text: `👤 ${name}\n\n${content}` })
+        await ctx.telegram.sendMessage(id, `👤 ${name}\n\n${content}`)
         sent++
       } catch (e) {
         console.error("❌ Error enviando a", id, e.message)
