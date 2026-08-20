@@ -26,22 +26,20 @@ export default {
     await ctx.reply(`📢 Enviando aviso a ${users.length} usuarios...`, { reply_to_message_id: messageId })
 
     let sent = 0
-    let report = []
     for (let id of users) {
       try {
-        let name = global.db.users[id]?.name || id
         if (replyMsg) {
           await ctx.telegram.copyMessage(id, ctx.chat.id, replyMsg.message_id)
         }
         if (content) {
           await ctx.telegram.sendMessage(id, content)
         }
-        report.push(`${++sent}) ${name}`)
+        sent++
       } catch (e) {
         console.error("❌ Error enviando a", id, e.message)
       }
     }
 
-    await ctx.reply(`✅ Enviado a ${sent} usuarios:\n${report.join("\n")}`, { reply_to_message_id: messageId })
+    await ctx.reply(`✅ Enviado a ${sent} usuarios.`, { reply_to_message_id: messageId })
   }
 }
