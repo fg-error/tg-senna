@@ -12,7 +12,9 @@ export default {
     }
 
     let content = text || ctx.message?.caption || null
-    if (!content && !ctx.message?.reply_to_message) {
+    const replyMsg = ctx.message?.reply_to_message
+
+    if (!content && !replyMsg) {
       return ctx.reply("⚠️ Debes escribir un mensaje.", { reply_to_message_id: messageId })
     }
 
@@ -28,10 +30,12 @@ export default {
     for (let id of users) {
       try {
         let name = global.db.users[id]?.name || id
-        if (ctx.message?.reply_to_message) {
-          await ctx.telegram.copyMessage(id, ctx.chat.id, ctx.message.reply_to_message.message_id)
+        if (replyMsg) {
+          await ctx.telegram.copyMessage(id, ctx.chat.id, replyMsg.message_id)
         }
-        await ctx.telegram.sendMessage(id, content)
+        if (content) {
+          await ctx.telegram.sendMessage(id, content)
+        }
         report.push(`${++sent}) ${name}`)
       } catch (e) {
         console.error("❌ Error enviando a", id, e.message)
