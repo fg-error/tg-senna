@@ -1,4 +1,3 @@
-
 export default {
   help: ["bc"],
   tags: ["owner"],
@@ -25,19 +24,20 @@ export default {
     await ctx.reply(`📢 Enviando aviso a ${users.length} usuarios...`, { reply_to_message_id: messageId })
 
     let sent = 0
+    let report = []
     for (let id of users) {
       try {
         let name = global.db.users[id]?.name || id
         if (ctx.message?.reply_to_message) {
           await ctx.telegram.copyMessage(id, ctx.chat.id, ctx.message.reply_to_message.message_id)
         }
-        await ctx.telegram.sendMessage(id, `👤 ${name}\n\n${content}`)
-        sent++
+        await ctx.telegram.sendMessage(id, content)
+        report.push(`${++sent}) ${name}`)
       } catch (e) {
         console.error("❌ Error enviando a", id, e.message)
       }
     }
 
-    await ctx.reply(`✅ Enviado a ${sent} usuarios.`, { reply_to_message_id: messageId })
+    await ctx.reply(`✅ Enviado a ${sent} usuarios:\n${report.join("\n")}`, { reply_to_message_id: messageId })
   }
 }
