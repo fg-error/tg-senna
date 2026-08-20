@@ -23,8 +23,6 @@ export default {
       return ctx.reply("⚠️ No hay usuarios en la base de datos.", { reply_to_message_id: messageId })
     }
 
-    await ctx.reply(`📢 Enviando aviso a ${users.length} usuarios...`, { reply_to_message_id: messageId })
-
     let sent = 0
     for (let id of users) {
       try {
